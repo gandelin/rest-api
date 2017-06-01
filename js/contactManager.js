@@ -1,6 +1,6 @@
 var BASE_URL = 'https://pacific-meadow-64112.herokuapp.com/data-api/';
 var collection = 'gandelin';
-var contacts = getContacts();
+var contacts = getDsContacts();
 var contactsVisible = false;
 
 $(document).ready(function() {
@@ -99,9 +99,9 @@ function getContactIndex(e) {
 function deleteContact(e) {
   var ix = getContactIndex(e);
   if (ix >= 0) {
+    deleteDsContact(contacts(ix));
     contacts.splice(ix, 1);
     updateContactTable();
-    saveContacts();
   }
 }
 
@@ -125,6 +125,7 @@ function createOrEditContact(contact) {
     if (contact) {
       contact.name = $('#name').val();
       contact.phone = $('#phone').val();
+      saveDsContact(contact);
     }
     else {
       // new contact
@@ -133,31 +134,59 @@ function createOrEditContact(contact) {
                       phone: $('#phone').val()
       };
       contacts.push(newContact);
+      saveDsContact(newContact);
     }
     updateContactTable();
-    saveContacts();
     togglePageVisibility();
   }
 }
 
-function getContacts() {
-  $.ajax( BASE_URL + collection,
-  {
-      method: 'GET',
+// get whole datastore collection of contacts
+function getDsContacts() {
+  $.getJSON( BASE_URL + collection, function(data) {
+    return JSON.parse(data);
+  });
+}
+
+// delete contact from datastore
+function deleteDsContact(contact) {
+  if (contact.id) {
+    clearReport();
+    $.ajax(BASE_URL + collection + '/' + contact.id, {
+      method: 'DELETE',
       success: reportResponse,
       error: reportAjaxError
-  } );
-  
-  if (c) {
-    return JSON.parse(c);
-  }
-  else {
-    return [];
+    });
   }
 }
 
-function saveContacts() {
-  localStorage[CONTACTS_PERSISTENCE_KEY] = JSON.stringify(contacts);
+// save (or update) contact to datastore
+function saveDsContact(contact) {
+  clearReport();
+  if (contact.id) {
+    // existing contact
+    $.ajax( BASE_URL + collection + '/' + id,
+    {
+        method: 'PUT',
+        data: contact,
+        success: reportResponse,
+        error: reportAjaxError
+    });
+  }
+  else {
+    // new contact
+    $.ajax( BASE_URL + collection,
+    {
+        method: 'POST',
+        data: contact,
+        success: reportResponse,
+        error: reportAjaxError
+    } );
+  }
+}
+
+function clearReport( ) {
+    $('#response').empty( );
 }
 
 function reportResponse( response ) {
