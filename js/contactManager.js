@@ -1,9 +1,13 @@
 var BASE_URL = 'https://pacific-meadow-64112.herokuapp.com/data-api/';
 var collection = 'gandelin';
-var contacts = getDsContacts();
+var contacts = [];
 var contactsVisible = false;
 
 $(document).ready(function() {
+   contacts = getDsContacts();
+  if (contacts == undefined) {
+    contacts = [];
+  }
   if (contacts.length > 0) {
     updateContactTable();
     resetForm();
@@ -71,11 +75,13 @@ function togglePageVisibility() {
   contactsVisible = !contactsVisible;
 }
 
-function addNewContact() {
+function addNewContact(e) {
+  e.preventDefault();
   createOrEditContact();
 }
 
 function editContact(e) {
+  e.preventDefault();
   var ix = getContactIndex(e);
   if (ix >= 0) {
     createOrEditContact(contacts[ix]);
@@ -97,6 +103,7 @@ function getContactIndex(e) {
 }
 
 function deleteContact(e) {
+  e.preventDefault();
   var ix = getContactIndex(e);
   if (ix >= 0) {
     deleteDsContact(contacts(ix));
@@ -144,7 +151,12 @@ function createOrEditContact(contact) {
 // get whole datastore collection of contacts
 function getDsContacts() {
   $.getJSON( BASE_URL + collection, function(data) {
-    return JSON.parse(data);
+    if (data.length > 0) {
+      return JSON.parse(data);
+    }
+    else {
+      return [];
+    }
   });
 }
 
