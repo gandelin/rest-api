@@ -1,5 +1,5 @@
-var CONTACTS_PERSISTENCE_KEY = 'contacts-storage';
-var nextId = 1000;
+var BASE_URL = 'https://pacific-meadow-64112.herokuapp.com/data-api/';
+var collection = 'gandelin';
 var contacts = getContacts();
 var contactsVisible = false;
 
@@ -141,7 +141,13 @@ function createOrEditContact(contact) {
 }
 
 function getContacts() {
-  var c = localStorage[CONTACTS_PERSISTENCE_KEY];
+  $.ajax( BASE_URL + collection,
+  {
+      method: 'GET',
+      success: reportResponse,
+      error: reportAjaxError
+  } );
+  
   if (c) {
     return JSON.parse(c);
   }
@@ -152,4 +158,21 @@ function getContacts() {
 
 function saveContacts() {
   localStorage[CONTACTS_PERSISTENCE_KEY] = JSON.stringify(contacts);
+}
+
+function reportResponse( response ) {
+    $('#response').text( JSON.stringify( response, null, 4 ) );
+}
+
+function reportAjaxError( jqXHR, textStatus, errorThrown ) {
+    var msg = 'AJAX error.\n' +
+        'Status Code: ' + jqXHR.status + '\n' +
+        'Status: ' + textStatus;
+    if ( errorThrown ) {
+        msg += '\n' + 'Error thrown: ' + errorThrown;
+    }
+    if ( jqXHR.responseText ) {
+        msg += '\n' + 'Response text: ' + jqXHR.responseText;
+    }
+    $('#response').text( msg );
 }
