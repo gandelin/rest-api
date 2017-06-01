@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>REST API</title>
+    <meta charset="utf-8">
+    <link type="text/css" rel="stylesheet" href="styles/stylesheet.css">
+    <script src="https://use.fontawesome.com/81140c216b.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>My Contacts</h1>
+   </header>
+   <article>
+      <section id="contactEntry">
+        <form id="addContact" method="post">
+          <label for="name">Name</label>
+          <input id="name" type="text">
+          <label for="phone">Phone</label>
+          <input id="phone" type="tel">
+          <input id="submit" type="submit" value="Submit">
+          <input id="cancel" type="button" value="Cancel">
+        </form>
+      </section>
+      <section id="contacts" class="hide">
+        <input id="addNewItem" type="button" value="Add New Item">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Phone Number</th>
+              <th><!-- Actions --></th>
+            </tr>
+          </thead>
+          <tbody id="contact-tbody">
+          </tbody>
+        </table>
+      </section>
+    </article>
+    <footer>
+      <p>HTML5-300 B Assignment 7, Copyright <i class="fa fa-copyright" aria-hidden="true"></i> 2017 Andelin Enterprises Inc.</p>
+    </footer>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/localStorage.js"></script>
+  </body>
+</html>

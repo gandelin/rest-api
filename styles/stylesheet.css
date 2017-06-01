@@ -1,0 +1,43 @@
+body {
+  margin: 0;
+  padding 0;
+}
+
+header {
+  background-color: dodgerblue;
+  margin: 0;
+  padding: 0 0.5rem;
+}
+
+footer {
+  background-color: dodgerblue;
+  text-align: center;
+  margin: 0;
+  padding: 0 0.5rem;
+}
+
+label {
+  font-weight:  bold;
+}
+
+table {
+  margin: 2rem 1rem;
+  padding: 0;
+} 
+
+th {
+  background-color: dodgerblue;
+}
+
+table, th, td {
+  border: solid 1px black;
+  border-collapse: collapse;
+}
+
+article {
+  height: 40rem;
+}
+
+.hide {
+  display: none;
+}
