@@ -1,7 +1,7 @@
 var BASE_URL = 'https://pacific-meadow-64112.herokuapp.com/data-api/';
 var collection = 'gandelin';
 var contacts = [];
-var contactsVisible = false;
+var contactsVisible = true;
 
 $(document).ready(function() {
    contacts = getDsContacts();
@@ -136,9 +136,8 @@ function createOrEditContact(contact) {
     }
     else {
       // new contact
-      var newContact = { id: (nextId++).toString(),
-                       name: $('#name').val(),
-                      phone: $('#phone').val()
+      var newContact = { name: $('#name').val(),
+                         phone: $('#phone').val()
       };
       contacts.push(newContact);
       saveDsContact(newContact);
